@@ -38,9 +38,7 @@ public class EduDAO {
 			for (i = 0; i < 5; i++) {
 				if (eduList.get(0) != null) {
 					no = eduList.get(0).getNo();
-					System.out.println(i);
 					if (i < eduList.size()) {
-						System.out.println("test");
 						if (ifweno_Exist(conn, eduList.get(i).getNo(), eduList.get(i).getEdu_no())) {
 							pstmt = conn.prepareStatement(
 									"update edu set edu_no = ?  , edu_content=? where no = ? and edu_no =?");

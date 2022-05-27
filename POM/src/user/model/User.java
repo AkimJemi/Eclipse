@@ -1,6 +1,5 @@
 package user.model;
 
-import java.io.File;
 import java.sql.Date;
 
 public class User {
@@ -25,13 +24,13 @@ public class User {
 	private String disabled;
 	private int disabled_grade;
 	private Date disabled_day;
+	private int lic_no;
 	private String license;
 	private Date license_day;
 	
 	public User(int no, String filename, String filerealname, String name, int reg_num, String phone, String addr, String email,
 			String school_name, String school_major, Date school_out, int tall, int weight, String eye_l, String eye_r,
-			String gender, String marry, String disabled, int disabled_grade, Date disabled_day, String license,
-			Date license_day) {
+			String gender, String marry, String disabled, int disabled_grade, Date disabled_day) {
 		this.no = no;
 		this.filename = filename;
 		this.filerealname = filerealname;
@@ -52,12 +51,24 @@ public class User {
 		this.disabled = disabled;
 		this.disabled_grade = disabled_grade;
 		this.disabled_day = disabled_day;
+	}
+	
+	public User() {}
+	
+	public User(int no, int lic_no, String license, Date license_day) {
+		this.no = no;
+		this.lic_no = lic_no;
 		this.license = license;
 		this.license_day = license_day;
 	}
 	
-	
-	public User() {}
+	public int getLic_no() {
+		return lic_no;
+	}
+
+	public void setLic_no(int lic_no) {
+		this.lic_no = lic_no;
+	}
 	
 	public int getNo() {
 		return no;
@@ -192,7 +203,4 @@ public class User {
 		this.license_day = license_day;
 	}
 	
-	
-	
-
 }

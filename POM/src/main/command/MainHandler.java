@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import main.model.Edu;
+import main.model.Paging;
 import main.model.WorkExperience;
 import main.service.EduService;
 import main.service.WEService;
@@ -35,25 +36,29 @@ public class MainHandler implements CommandHandler {
 		if (rq.getParameter("searchField") != null && rq.getParameter("searchField") != "") {
 			int search = Integer.parseInt(rq.getParameter("search"));
 			String searchField = rq.getParameter("searchField");
+			int startPage = 1;
+			if (rq.getParameter("startPage") != null)
+				startPage = Integer.parseInt(rq.getParameter("startPage"));
+
+			int currentPage = 1;
+			if (rq.getParameter("currentPage") != null)
+				currentPage = Integer.parseInt(rq.getParameter("currentPage"));
+
+			int total = personalService.getTotalPage(search, searchField);
+
+			Paging paging = new Paging(total, startPage, currentPage);
+
 			rq.setAttribute("search", search);
 			rq.setAttribute("searchField", searchField);
+			rq.setAttribute("paging", paging);
 			if (Integer.parseInt(rq.getParameter("search")) == 9) {
 				search = 9;
 				rq.setAttribute("searchError2", Boolean.TRUE);
 				return MAIN_FORM;
 			}
-			personnelList = personalService.getSearchPersonnel(search, searchField);
+			personnelList = personalService.getSearchPersonnel(search, searchField, paging);
 		}
 		rq.setAttribute("personnelList", personnelList);
-		
-		if (rq.getParameter("no") != null && rq.getParameter("no") != "") {
-			no = rq.getParameter("no");
-			No_int = Integer.parseInt(no);
-			rq.setAttribute("no", no);
-		} else {
-			rq.setAttribute("wrongRoute", Boolean.TRUE);
-			return MAIN_FORM;
-		}
 
 		if (rq.getParameter("choose") != null) {
 			if (rq.getParameter("choose").equalsIgnoreCase("personnel"))
@@ -61,20 +66,33 @@ public class MainHandler implements CommandHandler {
 			else
 				rq.setAttribute("choose", Boolean.FALSE);
 		}
-		
-		
-		if (rq.getParameter("modify") != null) 
-			rq.setAttribute("modify", Boolean.TRUE);
 
-		personnel = personalService.getPeronsonel(personnel, No_int);
-		eduList = new ArrayList<Edu>();
-		eduList = eduService.GetAllEduList(No_int);
-		weList = new ArrayList<WorkExperience>();
-		weList = weService.GetAllWEList(No_int);
-		rq.setAttribute("eduList", eduList);
-		rq.setAttribute("workexperience", weList);
-		rq.setAttribute("personnel", personnel);
+		if (rq.getParameter("modify") != null)
+			rq.setAttribute("modify", Boolean.TRUE);
 		
+		if (rq.getParameter("no") != null && rq.getParameter("no") != "") {
+			no = rq.getParameter("no");
+			No_int = Integer.parseInt(no);
+			rq.setAttribute("no", no);
+			rq.setAttribute("personnel", personnel);
+			personnel = personalService.getPeronsonel(personnel, No_int);
+			eduList = new ArrayList<Edu>();
+			eduList = eduService.GetAllEduList(No_int);
+			weList = new ArrayList<WorkExperience>();
+			weList = weService.GetAllWEList(No_int);
+			rq.setAttribute("eduList", eduList);
+			rq.setAttribute("workexperience", weList);
+			
+			
+		} else if (rq.getParameter("NoSummit") != null) {
+
+		} else {
+//			rq.setAttribute("wrongRoute", Boolean.TRUE);
+//			return MAIN_FORM;
+		}
+
+		
+	
 
 		if (rq.getMethod().equalsIgnoreCase("POST"))
 			return processSubmit(rq, rp);
@@ -87,12 +105,10 @@ public class MainHandler implements CommandHandler {
 	}
 
 	private String processForm(HttpServletRequest rq, HttpServletResponse rp) {
-
 		return MAIN_FORM;
 	}
 
 	private String processSubmit(HttpServletRequest rq, HttpServletResponse rp) {
-		System.out.println("processSubmit");
 		Date start_date = null;
 		Date end_date = null;
 		if (rq.getParameter("NoSummit") != null)
@@ -153,4 +169,14 @@ public class MainHandler implements CommandHandler {
 		}
 		return dating;
 	}
+	// public Map<String, String> toString(Sub sub) {
+	// String water_ind = String.format("%,d", sub.getWater_ind());
+	// String ele_basic = String.format("%,d", sub.getEle_basic());
+	// String ele_ind = String.format("%,d", sub.getEle_ind());
+	// result1.put("no", sub.getNo() + "");
+	// result1.put("water_ind", water_ind);
+	// result1.put("ele_basic", ele_basic);
+	// result1.put("ele_ind", ele_ind);
+	// return result1;
+	// }
 }

@@ -147,16 +147,9 @@ td {
 	$(document)
 			.ready(
 					function() {
-						var max_fields = 5 - $
-						{
-							workexperience.size()
-						}
-						; //최대개수
-						var wr = $
-						{
-							workexperience.size()
-						}
-						;
+						var weSize = ${workexperience.size()};
+						var max_fields = 5 - weSize; //최대개수
+						var wr = weSize;
 						var i = 1;
 						$("#WE_addBtn")
 								.click(
@@ -202,16 +195,8 @@ td {
 							i--;
 						})
 
-						var max_Edufields = 5 - $
-						{
-							eduList.size()
-						}
-						; //최대개수
-						var er = $
-						{
-							eduList.size()
-						}
-						;
+						var max_Edufields = 5 - ${eduList.size()}; //최대개수
+						var er = ${eduList.size()};
 						var j = 1;
 						$("#Edu_addBtn")
 								.click(
@@ -378,28 +363,62 @@ td {
 			<c:forEach var="personnelList" items="${personnelList }">
 				<tr class="box_line">
 					<td><a class="no_a"
-						href="user.do?choose=user&no=${personnelList.no }&search=${search}&searchField=${searchField}">${personnelList.no }</a>
+						href="user.do?choose=user&no=${personnelList.no }&search=${search}&searchField=${searchField}&currentPage=${ paging.currentPage}&startPage=${ paging.startPage}">${personnelList.no }</a>
 					</td>
 					<td>${personnelList.name }</td>
 					<td>${personnelList.job_position }</td>
 					<td>${personnelList.salary_class }</td>
 				</tr>
 			</c:forEach>
+			<tr>
+				<td id="tr_page_a" colspan="22"><c:if
+						test="${paging.total/paging.limit<5 }">
+						<c:forEach var="currentPage" begin="${paging.startPage }"
+							end="${Math.ceil(paging.total/paging.limit)}">
+							<a class="page_a"
+								href="user.do?currentPage=${ currentPage}&search=${search}&searchField=${searchField}">${currentPage }</a>
+						</c:forEach>
+					</c:if> <c:if test="${paging.endPage>5 }">
+						<a class="page_a"
+							href="user.do?startPage=${ paging.startPage-5}&currentPage=${ paging.startPage -1}&search=${search}&searchField=${searchField}">
+							前へ</a>
+					</c:if> <c:if test="${paging.total/paging.limit>=5 }">
+						<c:choose>
+							<c:when test="${paging.total/paging.limit<paging.endPage }">
+								<c:forEach var="currentPage" begin="${paging.startPage }"
+									end="${Math.ceil(paging.total/paging.limit)}">
+									<a class="page_a"
+										href="user.do?currentPage=${ currentPage}&startPage=${ paging.startPage}&search=${search}&searchField=${searchField}">${currentPage }</a>
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<c:forEach var="currentPage" begin="${paging.startPage }"
+									end="${ paging.startPage +4 }">
+									<a class="page_a"
+										href="user.do?currentPage=${ currentPage}&startPage=${ paging.startPage}&search=${search}&searchField=${searchField}">${currentPage }</a>
+								</c:forEach>
+							</c:otherwise>
+						</c:choose>
+						<c:if test="${paging.endPage != 10 }">
+							<a class="page_a"
+								href="user.do?startPage=${ paging.endPage+1}&currentPage=${ paging.endPage +1}&search=${search}&searchField=${searchField}">次へ</a>
+						</c:if>
+					</c:if></td>
+			</tr>
 		</table>
 		<input type="button" value="登録" style="width: 70px; height: 30px;"
 			onclick="location.href = 'userJoin.do'" />
 	</form>
 	<input type="button" value="人的事項" style="width: 70px; height: 30px;"
-		onclick="location.href = 'user.do?choose=user&no=${no }&search=${search}&searchField=${searchField}'" />
+		onclick="location.href = 'user.do?choose=user&no=${no }&search=${search}&searchField=${searchField}&search=${search}&searchField=${searchField}&currentPage=${ paging.currentPage}&startPage=${ paging.startPage}'" />
 	<input type="button" value="人事記録" style="width: 70px; height: 30px;"
-		onclick="location.href = 'main.do?choose=personnel&no=${no }&search=${search}&searchField=${searchField}'" />
+		onclick="location.href = 'main.do?choose=personnel&no=${no }&search=${search}&searchField=${searchField}&search=${search}&searchField=${searchField}&currentPage=${ paging.currentPage}&startPage=${ paging.startPage}'" />
 
 	<!-- 오른쪽 페이지 -->
-	${choose }
 	<c:choose>
 		<c:when test="${choose}">
 			<form
-				action="main.do?choose=personnel&search=${search}&searchField=${searchField}"
+				action="main.do?choose=personnel&search=${search}&searchField=${searchField}&currentPage=${ paging.currentPage}&startPage=${ paging.startPage}"
 				method="post">
 				<table border='1'>
 					<tr>
@@ -615,7 +634,7 @@ td {
 								</c:when>
 								<c:otherwise>
 									<input type="button"
-										onclick="location.href='main.do?choose=personnel&modify=true&no=${personnel.no}&search=${search}&searchField=${searchField}'"
+										onclick="location.href='main.do?choose=personnel&modify=true&no=${personnel.no}&search=${search}&searchField=${searchField}&currentPage=${ paging.currentPage}&startPage=${ paging.startPage}'"
 										value="修正" style="width: 70px; height: 30px;" />
 								</c:otherwise>
 							</c:choose></td>
@@ -624,29 +643,25 @@ td {
 			</form>
 		</c:when>
 		<c:otherwise>
-			<form action="user.do" method="post">
+			<form
+				action="user.do?search=${search}&searchField=${searchField}&currentPage=${ paging.currentPage}&startPage=${ paging.startPage}"
+				method="post">
 				<div>
 					<div>
-						<%
-						String img = (String) request.getAttribute("img");
-						%>
-						<%
-						if (img != null) {
-						%>
-						<img alt="사진" style="width: 100px; height: 100px;"
-							src="upload\2022_상반기_증명사진\<%=img%>">
-						<%
-						} else {
-						%>
-						<input class="face_file" type="file" id="input-file"
-							name="filename" maxlength="10">
-						<%
-						}
-						%>
+						<c:choose>
+							<c:when test="${not empty img}">
+								<img alt="사진" style="width: 100px; height: 100px;"
+									src="upload\2022_상반기_증명사진\<%=user.getFilerealname() %>">
+							</c:when>
+							<c:otherwise>
+								<div>写真登録</div>
+								<input class="face_file" type="file" id="input-file"
+									name="filename" maxlength="10">
+							</c:otherwise>
+						</c:choose>
 					</div>
 					<div>
-						<div>写真登録</div>
-						<input type="file" value="" />
+
 						<div class="div_top_l_l">社員番号</div>
 						<div>
 							<input class="short_input" type="text" name="no"
@@ -655,7 +670,7 @@ td {
 						<div class="div_top_l_l">名</div>
 						<div>
 							<input class="short_input" type="text" name="name"
-								value="${user.name}" <%=a %> />
+								value="${user.name}" readonly />
 						</div>
 
 					</div>
@@ -667,68 +682,130 @@ td {
 				</div>
 				<div class="div_top_l_l">連絡先</div>
 				<div>
-					<input class="short_input" type="text" name="phone"
-						value="${user.phone}" <%=a%> />
+					<c:choose>
+						<c:when test="${modify1 }">
+							<input class="short_input" type="text" name="phone"
+								value="${user.phone}" />
+						</c:when>
+						<c:otherwise>
+							<input class="short_input" type="text" name="phone"
+								value="${user.phone}" readonly />
+						</c:otherwise>
+					</c:choose>
 				</div>
 				<div class="div_long">メール</div>
 				<div>
-					<input class="long_input" type="text" name="email"
-						value="${user.email}" <%=a%> />
+					<c:choose>
+						<c:when test="${modify1 }">
+							<input class="long_input" type="text" name="email"
+								value="${user.email}" />
+						</c:when>
+						<c:otherwise>
+							<input class="long_input" type="text" name="email"
+								value="${user.email}" readonly />
+						</c:otherwise>
+					</c:choose>
 				</div>
 				<div class="div_long">住所</div>
 				<div>
-					<input class="long_input" type="text" name="addr"
-						value="${user.addr}" <%=a %> />
+					<c:choose>
+						<c:when test="${modify1 }">
+							<input class="long_input" type="text" name="addr"
+								value="${user.addr}" />
+						</c:when>
+						<c:otherwise>
+							<input class="long_input" type="text" name="addr"
+								value="${user.addr}" readonly />
+						</c:otherwise>
+					</c:choose>
 				</div>
 
 				<div>身長</div>
 				<div>
-					<input type="text" name="tall" value="${user.tall }" <%=a%> />
+					<c:choose>
+						<c:when test="${modify1 }">
+							<input type="text" name="tall" value="${user.tall }" />
+						</c:when>
+						<c:otherwise>
+							<input type="text" name="tall" value="${user.tall }" readonly />
+						</c:otherwise>
+					</c:choose>
 				</div>
 				<div>視力</div>
 				<div>左</div>
-				<input type="text" name="eye_l" value="${user.eye_l}" <%=a%> />
+				<c:choose>
+					<c:when test="${modify1 }">
+						<input type="text" name="eye_l" value="${user.eye_l}" />
+					</c:when>
+					<c:otherwise>
+						<input type="text" name="eye_l" value="${user.eye_l}" readonly />
+					</c:otherwise>
+				</c:choose>
 				<div>右</div>
-				<input type="text" name="eye_r" value="${user.eye_r}" <%=a%> />
+				<c:choose>
+					<c:when test="${modify1 }">
+						<input type="text" name="eye_r" value="${user.eye_r}" />
+					</c:when>
+					<c:otherwise>
+						<input type="text" name="eye_r" value="${user.eye_r}" readonly />
+					</c:otherwise>
+				</c:choose>
 				<div>結婚可否</div>
 				<div>
 					<c:choose>
-						<c:when test="${modify }">
-							<select name="marry" <%=a%>>
+						<c:when test="${modify1 }">
+							<select name="marry">
 								<option value="Y">既婚者</option>
 								<option value="N">未婚者</option>
 							</select>
 						</c:when>
 						<c:otherwise>
-							<input type="text" name="marry" value="${user.marry}" <%=a%> />
+							<c:if test="${user.marry eq 'Y' }">
+								<input type="text" name="marry" value="既婚者" readonly />
+							</c:if>
+							<c:if test="${user.marry eq 'N' }">
+								<input type="text" name="marry" value="未婚者" readonly />
+							</c:if>
 						</c:otherwise>
 					</c:choose>
 				</div>
 				<div>体重</div>
 				<div>
-					<input type="text" name="weight" value="${user.weight}" <%=a%> />
+					<c:choose>
+						<c:when test="${modify1 }">
+							<input type="text" name="weight" value="${user.weight }" />
+						</c:when>
+						<c:otherwise>
+							<input type="text" name="weight" value="${user.weight }" readonly />
+						</c:otherwise>
+					</c:choose>
 				</div>
 				<div>性別</div>
 				<div>
-					<input type="text" name="gender" value="${user.gender}" <%=a%> />
+					<input type="text" name="gender" value="${user.gender}" readonly />
 				</div>
 
 				<div>障害者</div>
 				<c:choose>
-					<c:when test="${modify }">
+					<c:when test="${modify1 }">
 						<select name="disabled">
 							<option value="Y">有</option>
 							<option value="N">無</option>
 						</select>
 					</c:when>
 					<c:otherwise>
-						<input type=text name="disabled" value="${user.disabled}" <%=a%> />
+						<c:if test="${user.disabled eq 'Y' }">
+							<input type=text name="disabled" value="有" readonly />
+						</c:if>
+						<c:if test="${user.disabled eq 'N' }">
+							<input type=text name="disabled" value="無" readonly />
+						</c:if>
 					</c:otherwise>
 				</c:choose>
 
 				<div>障害者等級</div>
 				<c:choose>
-					<c:when test="${modify }">
+					<c:when test="${modify1 }">
 						<select name="disabled_grade">
 							<option value="1">1</option>
 							<option value="2">2</option>
@@ -740,61 +817,101 @@ td {
 					</c:when>
 					<c:otherwise>
 						<input type=text name="disabled_grade"
-							value="${user.disabled_grade}" <%=a%> />
+							value="${user.disabled_grade}等級" readonly />
 					</c:otherwise>
 				</c:choose>
 
 				<div>障害登録日</div>
 				<div>
-					<input type="date" name="disabled_day" value="${user.disabled_day}"
-						<%=a%> />
+					<c:choose>
+						<c:when test="${modify1 }">
+							<input type="date" name="disabled_day"
+								value="${user.disabled_day}" />
+						</c:when>
+						<c:otherwise>
+							<input type="date" name="disabled_day"
+								value="${user.disabled_day}" readonly />
+						</c:otherwise>
+					</c:choose>
 				</div>
 
 				<div>卒業名</div>
 				<div>
-					<input type="text" name="school_name" value="${user.school_name}"
-						<%=a%> />
+					<c:choose>
+						<c:when test="${modify1 }">
+							<input type="text" name="school_name" value="${user.school_name}" />
+						</c:when>
+						<c:otherwise>
+							<input type="text" name="school_name" value="${user.school_name}"
+								readonly />
+						</c:otherwise>
+					</c:choose>
 				</div>
 				<div>専攻</div>
 				<div>
-					<input type="text" name="school_major" value="${user.school_major}"
-						<%=a%> />
+					<c:choose>
+						<c:when test="${modify1 }">
+							<input type="text" name="school_major"
+								value="${user.school_major}" />
+						</c:when>
+						<c:otherwise>
+							<input type="text" name="school_major"
+								value="${user.school_major}" readonly />
+						</c:otherwise>
+					</c:choose>
 				</div>
 				<div>卒業年度</div>
 				<div>
-					<input type="date" name="school_out" value="${user.school_out}"
-						<%=a%> />
+					<c:choose>
+						<c:when test="${modify1 }">
+							<input type="date" name="school_out" value="${user.school_out}" />
+						</c:when>
+						<c:otherwise>
+							<input type="date" name="school_out" value="${user.school_out}"
+								readonly />
+						</c:otherwise>
+					</c:choose>
 				</div>
 				<div>資格取得</div>
 				<div>資格</div>
 				<div>
-					<input type="text" name="license" value="${user.license}" <%=a%> />
+					<c:choose>
+						<c:when test="${modify1 }">
+							<input type="text" name="license" value="${user.license}" />
+						</c:when>
+						<c:otherwise>
+							<input type="text" name="license" value="${user.license}"
+								readonly />
+						</c:otherwise>
+					</c:choose>
 				</div>
 				<div>資格取得日</div>
 				<div>
-					<input type="date" name="license_day" value="${user.license_day}"
-						<%=a%> />
+					<c:choose>
+						<c:when test="${modify1 }">
+							<input type="date" name="license_day" value="${user.license_day}" />
+						</c:when>
+						<c:otherwise>
+							<input type="date" name="license_day" value="${user.license_day}"
+								readonly />
+						</c:otherwise>
+					</c:choose>
 				</div>
 				<div>
 					<input type="button" onclick="" value="追加" />
 				</div>
 				<c:choose>
-					<c:when test="${modify}">
+					<c:when test="${modify1}">
 						<input type="submit" value="完了" style="width: 70px; height: 30px;" />
 					</c:when>
 					<c:otherwise>
 						<input type="button"
-							onclick="location.href='user.do?choose=user&modify=true&no=${user.no}'"
+							onclick="location.href='user.do?choose=user&modify1=true&no=${user.no}&currentPage=${ paging.currentPage}&startPage=${ paging.startPage}'"
 							value="修正" style="width: 70px; height: 30px;" />
 					</c:otherwise>
 				</c:choose>
 			</form>
 		</c:otherwise>
 	</c:choose>
-
-
-
-
-	<div style="display: none;"></div>
 </body>
 </html>

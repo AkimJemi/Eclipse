@@ -1,7 +1,7 @@
 package user.service;
 
 import java.sql.Connection;
-import java.sql.SQLException;
+import java.util.ArrayList;
 
 import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
@@ -12,9 +12,9 @@ public class UserService {
 	private UserDAO userDao = new UserDAO();
 	private Connection conn = null;
 
-	public User getUser(User user, int no) throws SQLException {
-		conn = ConnectionProvider.getConnection();
+	public User getUser(User user, int no)  {
 		try {
+			conn = ConnectionProvider.getConnection();
 			user = userDao.select(conn, user, no);
 		} catch (Exception e) {
 			System.out.println("error : userDao.getUser()");
@@ -25,9 +25,9 @@ public class UserService {
 		return user;
 	}
 
-	public User modifyUser(User user) throws SQLException {
-		conn = ConnectionProvider.getConnection();
+	public User modifyUser(User user) {
 		try {
+			conn = ConnectionProvider.getConnection();
 			user = userDao.modify(conn, user);
 		} catch (Exception e) {
 			System.out.println("error : userDao.modifyUser()");
@@ -35,8 +35,50 @@ public class UserService {
 		} finally {
 			JdbcUtil.close(conn);
 		}
-
 		return user;
 	}
+	
+	public Boolean UserJoin(User user) {
+		Boolean result = false;
+		try {
+			conn = ConnectionProvider.getConnection();
+			userDao.insert(conn, user);
+			if(userDao.checkUser(conn, user.getReg_num())){
+				return result = true;
+			}
+		} catch (Exception e) {
+			System.out.println("error : userDao.modifyUser()");
+			System.out.println(e.getMessage());
+		} finally {
+			JdbcUtil.close(conn);
+		}
+		return result;
+	}
 
+	public ArrayList<User> InsertAllLic(ArrayList<User> licList) {
+		try {
+			conn = ConnectionProvider.getConnection();
+			licList = userDao.insertAllLic(conn, licList);
+		} catch (Exception e) {
+			System.out.println("error : userDao.InsertAllLic()");
+			System.out.println(e.getMessage());
+		} finally {
+			JdbcUtil.close(conn);
+		}
+		return licList;
+	}
+
+	public Boolean Reg_NumCheck(int reg_num) {
+		Boolean result = false;
+		try {
+			conn = ConnectionProvider.getConnection();
+			result = userDao.reg_numCheck(conn, reg_num);
+		} catch (Exception e) {
+			System.out.println("error : userDao.InsertAllLic()");
+			System.out.println(e.getMessage());
+		} finally {
+			JdbcUtil.close(conn);
+		}
+		return result;
+	}
 }

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import main.model.Paging;
 import mvc.command.CommandHandler;
 import personnel.model.Personnel;
 import personnel.service.PersonnelService;
@@ -24,31 +25,36 @@ public class UserHandler implements CommandHandler {
 	public String process(HttpServletRequest rq, HttpServletResponse rp) throws Exception {
 		ArrayList<Personnel> personnelList = new ArrayList<Personnel>();
 		String no = null;
-		int No_int = 0;
 		if (rq.getParameter("init") != null)
 			return MAIN_FORM;
 
 		if (rq.getParameter("searchField") != null && rq.getParameter("searchField") != "") {
 			int search = Integer.parseInt(rq.getParameter("search"));
 			String searchField = rq.getParameter("searchField");
+			int startPage = 1;
+			if (rq.getParameter("startPage") != null)
+				startPage =Integer.parseInt(rq.getParameter("startPage"));
+				
+			int currentPage = 1;
+			if(rq.getParameter("currentPage") !=null)
+			currentPage = Integer.parseInt(rq.getParameter("currentPage"));
+			
+			
+			int total = personalService.getTotalPage(search,searchField);
+			
+			Paging paging = new Paging(total, startPage, currentPage);
+			
 			rq.setAttribute("search", search);
 			rq.setAttribute("searchField", searchField);
+			rq.setAttribute("paging", paging);
 			if (Integer.parseInt(rq.getParameter("search")) == 9) {
 				search = 9;
 				rq.setAttribute("searchError2", Boolean.TRUE);
 				return MAIN_FORM;
 			}
-			personnelList = personalService.getSearchPersonnel(search, searchField);
+			personnelList = personalService.getSearchPersonnel(search, searchField ,paging);
 		}
 		rq.setAttribute("personnelList", personnelList);
-		
-		if (rq.getParameter("no") != null && rq.getParameter("no") != "") {
-			no = rq.getParameter("no");
-			rq.setAttribute("no", no);
-		} else {
-			rq.setAttribute("wrongRoute", Boolean.TRUE);
-			return MAIN_FORM;
-		}
 
 		if (rq.getParameter("choose") != null) {
 			if (rq.getParameter("choose").equalsIgnoreCase("personnel"))
@@ -57,15 +63,24 @@ public class UserHandler implements CommandHandler {
 				rq.setAttribute("choose", Boolean.FALSE);
 		}
 
-		if (rq.getParameter("modify") != null) 
-			rq.setAttribute("modify", Boolean.TRUE);
+		if (rq.getParameter("modifyUser") != null)
+			rq.setAttribute("modifyUser", Boolean.TRUE);
 		
-		
-		user = userService.getUser(user, Integer.parseInt(no));
-		if (rq.getParameter("modify") != null)
-			rq.setAttribute("modify", Boolean.TRUE);
+		if (rq.getParameter("no") != null && rq.getParameter("no") != "") {
+			no = rq.getParameter("no");
+			rq.setAttribute("no", no);
+			user = userService.getUser(user, Integer.parseInt(no));
+			String uploadPath = rq.getRealPath("/upload/2022_상반기_증명사진");
+			String filename = user.getFilename();
+			rq.setAttribute("img", filename);
+			rq.setAttribute("user", user);
+		} else if (rq.getParameter("NoSummit") != null) {
+			System.out.println("NoSummit");
+		} else {
+//			rq.setAttribute("wrongRoute", Boolean.TRUE);
+//			return MAIN_FORM;
+		}
 
-		rq.setAttribute("user", user);
 		if (rq.getMethod().equalsIgnoreCase("POST"))
 			return processSubmit(rq, rp);
 		else if (rq.getMethod().equalsIgnoreCase("GET"))
@@ -75,17 +90,11 @@ public class UserHandler implements CommandHandler {
 	}
 
 	private String processForm(HttpServletRequest rq, HttpServletResponse rs) throws SQLException {
-
-		String uploadPath = rq.getRealPath("/upload/2022_상반기_증명사진");
-		System.out.println("uploadPath : " + uploadPath);
-		String filename = user.getFilename();
-		System.out.println("filename : " + filename);
-		rq.setAttribute("img", filename);
+		
 		return MAIN_FORM;
 	}
 
 	private String processSubmit(HttpServletRequest rq, HttpServletResponse rs) throws SQLException {
-
 		Date school_out = null;
 		if (rq.getParameter("school_out") != null)
 			school_out = Datering(rq, rq.getParameter("school_out"));
@@ -102,8 +111,7 @@ public class UserHandler implements CommandHandler {
 				rq.getParameter("school_name"), rq.getParameter("school_major"), school_out,
 				Integer.parseInt(rq.getParameter("tall")), Integer.parseInt(rq.getParameter("weight")),
 				rq.getParameter("eye_l"), rq.getParameter("eye_r"), rq.getParameter("gender"), rq.getParameter("marry"),
-				rq.getParameter("disabled"), Integer.parseInt(rq.getParameter("disabled_grade")), disabled_day,
-				rq.getParameter("license"), license_day);
+				rq.getParameter("disabled"), Integer.parseInt(rq.getParameter("disabled_grade")), disabled_day);
 		user = userService.modifyUser(user);
 		rq.setAttribute("user", user);
 		return MAIN_FORM;
