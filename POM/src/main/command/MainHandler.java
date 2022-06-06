@@ -15,6 +15,7 @@ import main.service.WEService;
 import mvc.command.CommandHandler;
 import personnel.model.Personnel;
 import personnel.service.PersonnelService;
+import user.model.License;
 
 public class MainHandler implements CommandHandler {
 	private final static String MAIN_FORM = "WEB-INF/view/main.jsp";
@@ -70,30 +71,27 @@ public class MainHandler implements CommandHandler {
 		if (rq.getParameter("modify") != null)
 			rq.setAttribute("modify", Boolean.TRUE);
 		
+		
 		if (rq.getParameter("no") != null && rq.getParameter("no") != "") {
 			no = rq.getParameter("no");
 			No_int = Integer.parseInt(no);
 			rq.setAttribute("no", no);
-			rq.setAttribute("personnel", personnel);
 			personnel = personalService.getPeronsonel(personnel, No_int);
+			rq.setAttribute("personnel", personnel);
+			rq.setAttribute("money", toString(personnel.getMoney()));
 			eduList = new ArrayList<Edu>();
 			eduList = eduService.GetAllEduList(No_int);
 			weList = new ArrayList<WorkExperience>();
 			weList = weService.GetAllWEList(No_int);
 			rq.setAttribute("eduList", eduList);
 			rq.setAttribute("workexperience", weList);
-			
-			
+			rq.setAttribute("personnel", personnel);
 		} else if (rq.getParameter("NoSummit") != null) {
 
 		} else {
 //			rq.setAttribute("wrongRoute", Boolean.TRUE);
 //			return MAIN_FORM;
 		}
-
-		
-	
-
 		if (rq.getMethod().equalsIgnoreCase("POST"))
 			return processSubmit(rq, rp);
 		else if (rq.getMethod().equalsIgnoreCase("GET"))
@@ -105,12 +103,18 @@ public class MainHandler implements CommandHandler {
 	}
 
 	private String processForm(HttpServletRequest rq, HttpServletResponse rp) {
+		
+		
+		
+		
+		
 		return MAIN_FORM;
 	}
 
 	private String processSubmit(HttpServletRequest rq, HttpServletResponse rp) {
 		Date start_date = null;
 		Date end_date = null;
+		
 		if (rq.getParameter("NoSummit") != null)
 			return MAIN_FORM;
 
@@ -120,15 +124,15 @@ public class MainHandler implements CommandHandler {
 			if (rq.getParameter("we_no" + i) != null) {
 				start_date = Datering(rq, rq.getParameter("begin_date" + i));
 				end_date = Datering(rq, rq.getParameter("end_date" + i));
-
 				weList.add(new WorkExperience(Integer.parseInt(rq.getParameter("no")),
 						Integer.parseInt(rq.getParameter("we_no" + i)),
 						Integer.parseInt(rq.getParameter("dept_no" + i)),
 						Integer.parseInt(rq.getParameter("mini_no" + i)), start_date, end_date));
 			}
 		}
-		weList = weService.InsertAllWE(weList);
-
+		int no = Integer.parseInt(rq.getParameter("no"));
+		weList = weService.InsertAllWE(weList, no);
+		
 		eduList = new ArrayList<Edu>();
 		for (int i = 1; i <= 5; i++) {
 			if (rq.getParameter("edu_no" + i) != null) {
@@ -136,20 +140,21 @@ public class MainHandler implements CommandHandler {
 						Integer.parseInt(rq.getParameter("edu_no" + i)), rq.getParameter("edu_content" + i)));
 			}
 		}
-		eduList = eduService.InsertAllEdu(eduList);
+		eduList = eduService.InsertAllEdu(eduList, no);
 
 		Date enter_date = null;
 		if (rq.getParameter("enter_date") != null)
 			enter_date = Datering(rq, rq.getParameter("enter_date"));
 		Date resign_date = null;
-		if (rq.getParameter("resign_date") != null)
+		if (rq.getParameter("resign_date") != null && rq.getParameter("resign_date") != "")
 			resign_date = Datering(rq, rq.getParameter("resign_date"));
 
 		personnel = new Personnel(Integer.parseInt(rq.getParameter("no")), rq.getParameter("name"),
 				Integer.parseInt(rq.getParameter("job_position")), Integer.parseInt(rq.getParameter("salary_class")),
-				Integer.parseInt(rq.getParameter("money")), Integer.parseInt(rq.getParameter("mini_no")),
+				0, Integer.parseInt(rq.getParameter("mini_no")),
 				Integer.parseInt(rq.getParameter("dept_no")), enter_date, resign_date);
 		personnel = personalService.modifyPersonnel(personnel);
+		rq.setAttribute("money", toString(personnel.getMoney()));
 		rq.setAttribute("eduList", eduList);
 		rq.setAttribute("workexperience", weList);
 		rq.setAttribute("personnelList", personnelList);
@@ -164,19 +169,14 @@ public class MainHandler implements CommandHandler {
 			String param = (String) value;
 			dating = new Date(sdf.parse(param).getTime());
 		} catch (Exception e) {
-			System.out.println("error : Datering");
+			System.out.println("error : MainHandler.Datering()");
 			System.out.println(e.getMessage());
 		}
 		return dating;
 	}
-	// public Map<String, String> toString(Sub sub) {
-	// String water_ind = String.format("%,d", sub.getWater_ind());
-	// String ele_basic = String.format("%,d", sub.getEle_basic());
-	// String ele_ind = String.format("%,d", sub.getEle_ind());
-	// result1.put("no", sub.getNo() + "");
-	// result1.put("water_ind", water_ind);
-	// result1.put("ele_basic", ele_basic);
-	// result1.put("ele_ind", ele_ind);
-	// return result1;
-	// }
+	
+	 public String toString (int sub) {
+		 String result = String.format("%,d", sub);
+		 return result;
+		 }
 }

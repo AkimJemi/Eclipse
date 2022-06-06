@@ -26,10 +26,10 @@ public class EduService {
 		return eduList;
 	}
 
-	public ArrayList<Edu> InsertAllEdu(ArrayList<Edu> eduList) {
+	public ArrayList<Edu> InsertAllEdu(ArrayList<Edu> eduList, int no) {
 		try {
 			conn = ConnectionProvider.getConnection();
-			eduList= eduDao.InsertAll(conn, eduList);
+			eduList= eduDao.InsertAll(conn, eduList,no);
 
 		} catch (Exception e) {
 			System.out.println("error : WEService.InsertAllWE()");

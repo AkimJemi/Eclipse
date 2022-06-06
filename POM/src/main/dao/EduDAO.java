@@ -31,12 +31,12 @@ public class EduDAO {
 		return eduList;
 	}
 
-	public ArrayList<Edu> InsertAll(Connection conn, ArrayList<Edu> eduList) {
+	public ArrayList<Edu> InsertAll(Connection conn, ArrayList<Edu> eduList, int no2) {
 		int no = 0;
 		try {
 			int i;
-			for (i = 0; i < 5; i++) {
-				if (eduList.get(0) != null) {
+			if (eduList.size() != 0) {
+				for (i = 0; i < 5; i++) {
 					no = eduList.get(0).getNo();
 					if (i < eduList.size()) {
 						if (ifweno_Exist(conn, eduList.get(i).getNo(), eduList.get(i).getEdu_no())) {
@@ -48,8 +48,8 @@ public class EduDAO {
 							pstmt.setInt(4, eduList.get(i).getEdu_no());
 							pstmt.executeUpdate();
 						} else {
-							pstmt = conn.prepareStatement(
-									"insert into edu ( no ,edu_no, edu_content) values (?, ?, ?)");
+							pstmt = conn
+									.prepareStatement("insert into edu ( no ,edu_no, edu_content) values (?, ?, ?)");
 							pstmt.setInt(1, eduList.get(i).getNo());
 							pstmt.setInt(2, eduList.get(i).getEdu_no());
 							pstmt.setString(3, eduList.get(i).getEdu_content());
@@ -61,18 +61,21 @@ public class EduDAO {
 						pstmt.setInt(2, i + 1);
 						pstmt.executeUpdate();
 					}
-				} else {
-					pstmt = conn.prepareStatement("delete from edu where no = ?");
-					pstmt.setInt(1, no);
-					pstmt.executeUpdate();
 				}
+			} else {
+				pstmt = conn.prepareStatement("delete from edu where no = ?");
+				pstmt.setInt(1, no2);
+				pstmt.executeUpdate();
 			}
 		} catch (Exception e) {
 			System.out.println("error : WEDAO.InsertAll()");
 			System.out.println(e.getMessage());
+		} finally {
+			JdbcUtil.close(pstmt, rs);
 		}
 		return eduList;
 	}
+
 	private boolean ifweno_Exist(Connection conn, int no, int edu_no) {
 		try {
 			pstmt = conn.prepareStatement("select edu_no from edu where no = ? and edu_no = ?");

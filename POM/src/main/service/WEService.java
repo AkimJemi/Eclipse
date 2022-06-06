@@ -14,10 +14,10 @@ public class WEService {
 	private Connection conn;
 //	ArrayList<WorkExperience> weList = new ArrayList<WorkExperience>(); // 의문
 
-	public ArrayList<WorkExperience> InsertAllWE(ArrayList<WorkExperience> workExperiences) {
+	public ArrayList<WorkExperience> InsertAllWE(ArrayList<WorkExperience> workExperiences, int no) {
 		try {
 			conn = ConnectionProvider.getConnection();
-			workExperiences = weDao.InsertAll(conn, workExperiences);
+			workExperiences = weDao.InsertAll(conn, workExperiences, no);
 
 		} catch (Exception e) {
 			System.out.println("error : WEService.InsertAllWE()");

@@ -25,7 +25,6 @@ public class User {
 	private int disabled_grade;
 	private Date disabled_day;
 	
-	
 	public User(int no, String filename, String filerealname, String name, int reg_num, String phone, String addr, String email,
 			String school_name, String school_major, Date school_out, int tall, int weight, String eye_l, String eye_r,
 			String gender, String marry, String disabled, int disabled_grade, Date disabled_day) {
@@ -173,4 +172,5 @@ public class User {
 	public void setDisabled_day(Date disabled_day) {
 		this.disabled_day = disabled_day;
 	}
+
 }

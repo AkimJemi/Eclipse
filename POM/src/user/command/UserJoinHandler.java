@@ -14,6 +14,7 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
 import mvc.command.CommandHandler;
 import personnel.service.PersonnelService;
+import user.model.License;
 import user.model.User;
 import user.service.UserService;
 
@@ -62,29 +63,31 @@ public class UserJoinHandler implements CommandHandler {
 			System.out.println(e.getMessage());
 		}
 
-		String uploadPath = rq.getRealPath("/upload/2022_상반기_증명사진");
+		String uploadPath = rq.getRealPath("upload/2022_상반기_증명사진");
 		int size = 10 * 1024 * 1024; // byte
 		String filename = "";
 		String origfilename = "";
 		Date disabled_day = null;
 		Date school_out = null;
 		int disabled_grade = 0;
+		
 		try {
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			if (rq.getParameter("disabled").trim().equals("Y")){
+				disabled_grade = Integer.parseInt(rq.getParameter("disabled_grade"));
+				String disabled_day_init = rq.getParameter("disabled_day");
+				disabled_day = new Date(sdf.parse(disabled_day_init).getTime());
+				
+			}
+			System.out.println("uploadPath : " + uploadPath);
+			school_out = Datering(rq.getParameter("school_out"));
 			MultipartRequest multi = new MultipartRequest(rq, uploadPath, size, "utf-8", new DefaultFileRenamePolicy());
 			Enumeration<String> files = multi.getFileNames();
 			String file = files.nextElement();
 			filename = multi.getFilesystemName(file);
 			origfilename = multi.getOriginalFileName(file);
-
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-			String school_out_init = rq.getParameter("school_out");
-			school_out = new Date(sdf.parse(school_out_init).getTime());
-			if (rq.getParameter("disabled") == "Y") {
-				disabled_grade = Integer.parseInt(rq.getParameter("disabled_grade"));
-				String disabled_day_init = rq.getParameter("disabled_day");
-				disabled_day = new Date(sdf.parse(disabled_day_init).getTime());
-			}
+			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			System.out.println("error : UserJoinHandler.processSubmit()");
@@ -99,18 +102,19 @@ public class UserJoinHandler implements CommandHandler {
 		Date license_day = null;
 		Boolean result = userService.UserJoin(user);
 		if (result) {
-			user = userService.getUser(user, user.getReg_num());
+			user = userService.getUserByReg_num(user, user.getReg_num());
 			rq.setAttribute("readonly", Boolean.TRUE);
 			rq.setAttribute("user", user);
 			rq.setAttribute("img", filename);
 			personnelService.AddPersonnel(user);
-			ArrayList<User> licList = new ArrayList<User>();
+			ArrayList<License> licList = new ArrayList<License>();
+			System.out.println("userNo : " + user.getNo());
 			if (!rq.getParameter("license" + 1).equals("")) {
 				for (int i = 1; i <= 5; i++) {
 					if (rq.getParameter("license" + i) != null && !rq.getParameter("license" + i).equals("undefined")
 							&& !rq.getParameter("license" + i).equals("")) {
-						license_day = Datering(rq, rq.getParameter("license_day" + i));
-						licList.add(new User(user.getNo(), Integer.parseInt(rq.getParameter("lic_no" + i)),
+						license_day = Datering(rq.getParameter("license_day" + i));
+						licList.add(new License(user.getNo(), Integer.parseInt(rq.getParameter("lic_no" + i)),
 								rq.getParameter("license" + i), license_day));
 					}
 				}
@@ -124,7 +128,7 @@ public class UserJoinHandler implements CommandHandler {
 		return FORM_VIEW;
 	}
 
-	private Date Datering(HttpServletRequest rq, Object value) {
+	private Date Datering( Object value) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date dating = null;
 		try {

@@ -12,12 +12,14 @@ public class WEDAO {
 	private PreparedStatement pstmt = null;
 	private ResultSet rs = null;
 
-	public ArrayList<WorkExperience> InsertAll(Connection conn, ArrayList<WorkExperience> workExperiences) {
+	public ArrayList<WorkExperience> InsertAll(Connection conn, ArrayList<WorkExperience> workExperiences, int no2) {
 		int no = 0;
 		try {
 			int i;
-			for (i = 0; i < 5; i++) {
-				if (workExperiences.get(0) != null) {
+			System.out.println("workExperiences.size() : " + workExperiences.size());
+			System.out.println("workExperiences.size() : " + no);
+			if (workExperiences.size() != 0) {
+				for (i = 0; i < 5; i++) {
 					no = workExperiences.get(0).getNo();
 					if (i < workExperiences.size()) {
 						if (ifweno_Exist(conn, workExperiences.get(i).getNo(), workExperiences.get(i).getWe_no())) {
@@ -47,16 +49,18 @@ public class WEDAO {
 						pstmt.setInt(2, i + 1);
 						pstmt.executeUpdate();
 					}
-				} else {
-					System.out.println("deleteAll");
-					pstmt = conn.prepareStatement("delete from workexperience where no = ?");
-					pstmt.setInt(1, no);
-					pstmt.executeUpdate();
 				}
+			} else {
+				System.out.println("deleteAll");
+				pstmt = conn.prepareStatement("delete from workexperience where no = ?");
+				pstmt.setInt(1, no2);
+				pstmt.executeUpdate();
 			}
 		} catch (Exception e) {
 			System.out.println("error : WEDAO.InsertAll()");
 			System.out.println(e.getMessage());
+		} finally {
+			JdbcUtil.close(pstmt, rs);
 		}
 		return workExperiences;
 	}

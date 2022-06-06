@@ -6,16 +6,29 @@ import java.util.ArrayList;
 import jdbc.JdbcUtil;
 import jdbc.connection.ConnectionProvider;
 import user.dao.UserDAO;
+import user.model.License;
 import user.model.User;
 
 public class UserService {
 	private UserDAO userDao = new UserDAO();
 	private Connection conn = null;
 
-	public User getUser(User user, int no)  {
+	public User getUserByNo(User user, int no)  {
 		try {
 			conn = ConnectionProvider.getConnection();
-			user = userDao.select(conn, user, no);
+			user = userDao.selectByNo(conn, user, no);
+		} catch (Exception e) {
+			System.out.println("error : userDao.getUser()");
+			System.out.println(e.getMessage());
+		} finally {
+			JdbcUtil.close(conn);
+		}
+		return user;
+	}
+	public User getUserByReg_num(User user, int reg_num)  {
+		try {
+			conn = ConnectionProvider.getConnection();
+			user = userDao.selectByReg_num(conn, user, reg_num);
 		} catch (Exception e) {
 			System.out.println("error : userDao.getUser()");
 			System.out.println(e.getMessage());
@@ -55,7 +68,7 @@ public class UserService {
 		return result;
 	}
 
-	public ArrayList<User> InsertAllLic(ArrayList<User> licList) {
+	public ArrayList<License> InsertAllLic(ArrayList<License> licList) {
 		try {
 			conn = ConnectionProvider.getConnection();
 			licList = userDao.insertAllLic(conn, licList);

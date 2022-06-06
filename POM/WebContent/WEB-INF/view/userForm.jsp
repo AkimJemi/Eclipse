@@ -124,6 +124,7 @@
 	width: 100%;
 	height: 30px;
 }
+
 .short_input2 {
 	width: 45%;
 	height: 30px;
@@ -286,30 +287,81 @@ select:focus {
 	}
 
 	function fn_check() {
+
 		var name = Frm.name.value;
 		if (name == '') {
 			alert("성명을 입력해주세요");
 			return;
 		}
-		var reg_num = Frm.reg_num.value;
-		if (reg_num == '') {
-			alert("주소를 입력해주세요");
-			return;
-		}
 		var phone = Frm.phone.value;
 		if (phone == '') {
-			alert("전화번호를 입력해주세요");
+			alert("연락처를 입력해주세요");
+			return;
+		}
+		var reg_num = Frm.reg_num.value;
+		if (reg_num == '') {
+			alert("주민번호를 입력해주세요");
 			return;
 		}
 		var addr = Frm.addr.value;
 		if (addr == '') {
-			alert("주민번호를 입력해주세요");
+			alert("주소를 입력해주세요");
 			return;
 		}
 		var email = Frm.email.value;
 		if (email == '') {
 			alert("이메일을 입력해주세요");
 			return;
+		}
+
+		var tall = Frm.tall.value;
+		if (tall == '') {
+			alert("신장을 입력해주세요");
+			return;
+		}
+
+		var eye_l = Frm.eye_l.value;
+		if (eye_l == '') {
+			alert("[좌] 시력을 입력해주세요");
+			return;
+		}
+		var eye_r = Frm.eye_r.value;
+		if (eye_r == '') {
+			alert("[우] 시력을 입력해주세요");
+			return;
+		}
+		var weight = Frm.weight.value;
+		if (weight == '') {
+			alert("체중을 입력해주세요");
+			return;
+		}
+		var marry = Frm.marry.value;
+		if (marry == '9') {
+			alert("결혼여부를 선택해주세요");
+			return;
+		}
+
+		var gender = Frm.gender.value;
+		if (gender == '9') {
+			alert("성별을 선택해주세요");
+			return;
+		}
+		var disabled = Frm.disabled.value;
+		if (disabled == '9') {
+			alert("장애인 구분 선택해주세요");
+			return;
+		}
+		if (disabled == 'Y') {
+			var disabled_grade = Frm.disabled_grade.value;
+			if (disabled_grade == '9') {
+				alert("장애인 구분 [유]를 선택하신 경우 장애인 등급을 선택해주세요");
+				return;
+			}
+			var disabled_day = Frm.disabled_day.value;
+			if (disabled_day == '') {
+				alert("장애인 구분 [유]를 선택하신 경우 장애인 등록일을 선택해주세요");
+				return;
+			}
 		}
 		var school_name = Frm.school_name.value;
 		if (school_name == '') {
@@ -326,44 +378,12 @@ select:focus {
 			alert("졸업연도를 입력해주세요");
 			return;
 		}
-		var tall = Frm.tall.value;
-		if (tall == '') {
-			alert("신장을 입력해주세요");
-			return;
-		}
-		var weight = Frm.weight.value;
-		if (weight == '') {
-			alert("체중을 입력해주세요");
-			return;
-		}
-		var eye_l = Frm.eye_l.value;
-		if (eye_l == '') {
-			alert("시력을 입력해주세요");
-			return;
-		}
-		var eye_r = Frm.eye_r.value;
-		if (eye_r == '') {
-			alert("시력을 입력해주세요");
-			return;
-		}
-		var gender = Frm.gender.value;
-		if (gender == '') {
-			alert("성별을 입력해주세요");
-			return;
-		}
-		var marry = Frm.marry.value;
-		if (marry == '') {
-			alert("결혼여부를 입력해주세요");
-			return;
-		}
 		var filename = Frm.filename.value;
 		if (filename == '') {
 			alert("사진을 첨부해주세요");
 			return;
 		}
-		var disabled = Frm.disabled.value;
-		var disabled_grade = Frm.disabled_grade.value;
-		var disabled_day = Frm.disabled_day.value;
+
 		if (Frm.lic_no1) {
 			var lic_no1 = Frm.lic_no1.value;
 			var license1 = Frm.license1.value;
@@ -389,6 +409,11 @@ select:focus {
 			var license5 = Frm.license5.value;
 			var license_day5 = Frm.license_day5.value;
 		}
+		if (!Frm.lic_no1) {
+			if (!confirm("입력 완료하셨습니다. 마지막으로 자격증이 정말 없으십니까?"))
+				return;
+		}
+
 		Frm.encoding = 'multipart/form-data';
 		Frm.action = "userJoin.do?name=" + name + "&reg_num=" + reg_num
 				+ "&phone=" + phone + "&addr=" + addr + "&email=" + email
@@ -446,9 +471,10 @@ select:focus {
 						<input class="short_input" type="text" name="name" maxlength="7"
 							value="${user.name }" <%=ifRequired%>> <input
 							class="short_input" type="number" name="phone" maxlength="13"
-							value="${user.phone }" placeholder="- 없이 입력해주세요" <%=ifRequired%>> <input
-							class="short_input" type="number" name="reg_num" maxlength="14"
-							value="${user.reg_num }" placeholder="- 없이 입력해주세요" <%=ifRequired%>>
+							value="${user.phone }" placeholder="- 없이 입력해주세요" <%=ifRequired%>>
+						<input class="short_input" type="number" name="reg_num"
+							maxlength="14" value="${user.reg_num }" placeholder="- 없이 입력해주세요"
+							<%=ifRequired%>>
 					</div>
 				</div>
 
@@ -467,15 +493,12 @@ select:focus {
 						} else {
 						%>
 						<input class="face_file" type="file" id="input-file"
-							name="filename" maxlength="20" value="${user.filename}"
-							<%=ifRequired%>>
+							name="filename" maxlength="20" value="${user.filename}">
 						<%
 						}
 						%>
-						<input class="short_input2" type="text" name="email" maxlength="30"
-							value="${user.email}" <%=ifRequired%>>@
-							<input class="short_input2" type="text" name="email" maxlength="30"
-							value="${user.email}" <%=ifRequired%>>
+						<input class="short_input" type="email" name="email"
+							maxlength="30" value="${user.email}" <%=ifRequired%>>
 					</div>
 				</div>
 			</div>
@@ -500,16 +523,18 @@ select:focus {
 							placeholder="숫자만 입력해주세요." value="${user.tall}" <%=ifRequired%>>
 						<div>
 							<span class="eye_span">좌</span><input class="very_short_input"
-								type="text" name="eye_l" placeholder="예) 1.5" maxlength="3" value="${user.eye_l}"
-								<%=ifRequired%>> <span class="eye_span">우</span><input
-								class="very_short_input" type="text" name="eye_r" maxlength="3"
-								value="${user.eye_r}" placeholder="예) 1.5" <%=ifRequired%>> <input
+								type="text" name="eye_l" placeholder="예) 1.5" maxlength="3"
+								value="${user.eye_l}" <%=ifRequired%>> <span
+								class="eye_span">우</span><input class="very_short_input"
+								type="text" name="eye_r" maxlength="3" value="${user.eye_r}"
+								placeholder="예) 1.5" <%=ifRequired%>> <input
 								class="short_input" type="number" name="weight" maxlength="3"
-								value="${user.weight}" placeholder="숫자만 입력해주세요."  <%=ifRequired%>>
+								value="${user.weight}" placeholder="숫자만 입력해주세요." <%=ifRequired%>>
 						</div>
 						<c:choose>
 							<c:when test="${!readonly }">
 								<select class="short_input" name="marry">
+									<option value="9">결혼여부</option>
 									<option value="N">미혼</option>
 									<option value="Y">기혼</option>
 								</select>
@@ -539,7 +564,7 @@ select:focus {
 							<c:when test="${!readonly}">
 								<select class="short_input" name="gender">
 									<option value="9">성별</option>
-									<option value="N">남</option>
+									<option value="M">남</option>
 									<option value="F">여</option>
 								</select>
 								<select class="short_input" name="disabled"
@@ -582,7 +607,7 @@ select:focus {
 										<input type="text" class="short_input" value="무" readonly />
 										<input class="short_input" type="text" name="disabled_grade"
 											maxlength="15" value="무" readonly>
-										<input class="short_input" type="date" name="disabled_day"
+										<input class="short_input" type="text" name="disabled_day"
 											maxlength="15" value="무" readonly>
 									</c:otherwise>
 								</c:choose>
@@ -592,7 +617,6 @@ select:focus {
 				</div>
 			</div>
 			<div class="clear"></div>
-
 			<div id="div_4">
 				<div class="div_in_l">
 					<div class="div_in_l_l">
@@ -611,7 +635,6 @@ select:focus {
 				</div>
 			</div>
 			<div class="clear"></div>
-
 			<c:choose>
 				<c:when test="${!readonly }">
 					<div class="div_5">
@@ -622,7 +645,8 @@ select:focus {
 							</div>
 							<div class="div_in_l_r">
 								<input class="short_input" type="text" name="license1"
-									maxlength="15" value="${user.license }" <%=ifRequired%>>
+									maxlength="15" value="${user.license }"
+									placeholder="자격증이 없을 시 공백으로 해주세요">
 							</div>
 						</div>
 						<div class="div_in_r">
@@ -631,7 +655,7 @@ select:focus {
 							</div>
 							<div class="div_in_l_r">
 								<input class="short_input" type="date" name="license_day1"
-									maxlength="15" value="${user.license_day}" <%=ifRequired%>>
+									maxlength="15" value="${user.license_day}">
 							</div>
 						</div>
 					</div>
@@ -646,13 +670,14 @@ select:focus {
 					<c:forEach var="license" items="${license }">
 						<div class="div_5">
 							<div class="div_in_l">
-								<input type="hidden" name="lic_no1" value="1" />
+								<input type="hidden" name="lic_no${license.lic_no }" value="1" />
 								<div class="div_in_l_l">
 									<div class="input_title">자격증</div>
 								</div>
 								<div class="div_in_l_r">
-									<input class="short_input" type="text" name="license1"
-										maxlength="15" value="${license.license }" readonly>
+									<input class="short_input" type="text"
+										name="license${license.lic_no }" maxlength="15"
+										value="${license.license }" readonly>
 								</div>
 							</div>
 							<div class="div_in_r">
@@ -660,8 +685,9 @@ select:focus {
 									<div class="input_title">자격취득일</div>
 								</div>
 								<div class="div_in_l_r">
-									<input class="short_input" type="date" name="license_day1"
-										maxlength="15" value="${license.license_day}" readonly>
+									<input class="short_input" type="date"
+										name="license_day${license.lic_no }" maxlength="15"
+										value="${license.license_day}" readonly>
 								</div>
 							</div>
 						</div>
