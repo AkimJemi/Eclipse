@@ -8,7 +8,7 @@ public class User {
 	private String filename;
 	private String filerealname;
 	private String name;
-	private int reg_num;
+	private long reg_num;
 	private String phone;
 	private String addr;
 	private String email;
@@ -26,7 +26,7 @@ public class User {
 	private Date disabled_day;
 	
 	
-	public User(int no, String filename, String filerealname, String name, int reg_num, String phone, String addr, String email,
+	public User(int no, String filename, String filerealname, String name, long reg_num, String phone, String addr, String email,
 			String school_name, String school_major, Date school_out, int tall, int weight, String eye_l, String eye_r,
 			String gender, String marry, String disabled, int disabled_grade, Date disabled_day) {
 		this.no = no;
@@ -65,7 +65,7 @@ public class User {
 	public String getName() {
 		return name;
 	}
-	public int getReg_num() {
+	public long getReg_num() {
 		return reg_num;
 	}
 	public String getPhone() {

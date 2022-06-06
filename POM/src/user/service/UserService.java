@@ -25,7 +25,7 @@ public class UserService {
 		}
 		return user;
 	}
-	public User getUserByReg_num(User user, int reg_num)  {
+	public User getUserByReg_num(User user, long reg_num)  {
 		try {
 			conn = ConnectionProvider.getConnection();
 			user = userDao.selectByReg_num(conn, user, reg_num);
@@ -81,7 +81,7 @@ public class UserService {
 		return licList;
 	}
 
-	public Boolean Reg_NumCheck(int reg_num) {
+	public Boolean Reg_NumCheck(long reg_num) {
 		Boolean result = false;
 		try {
 			conn = ConnectionProvider.getConnection();

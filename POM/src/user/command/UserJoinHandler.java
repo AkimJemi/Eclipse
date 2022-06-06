@@ -1,5 +1,6 @@
 package user.command;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -47,7 +48,7 @@ public class UserJoinHandler implements CommandHandler {
 		 * tmp0\wtpwebapps\POM \ upload
 		 */
 
-		Boolean reg_numCheck = userService.Reg_NumCheck(Integer.parseInt(rq.getParameter("reg_num")));
+		Boolean reg_numCheck = userService.Reg_NumCheck(Long.parseLong(rq.getParameter("reg_num")));
 		try {
 			if (!reg_numCheck) {
 				rp.setContentType("text/html;charset=UTF-8");
@@ -72,13 +73,23 @@ public class UserJoinHandler implements CommandHandler {
 		int disabled_grade = 0;
 		
 		try {
-			
+			File Folder = new File(uploadPath);
+
+			// 해당 디렉토리가 없을경우 디렉토리를 생성합니다.
+			if (!Folder.exists()) {
+				try{
+				    Folder.mkdir(); //폴더 생성합니다.
+				    System.out.println("POM\\upload\\2022_상반기_증명사진 폴더가 생성되었습니다.");
+			        } 
+			        catch(Exception e){
+				    e.getStackTrace();
+				}    
+			}
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			if (rq.getParameter("disabled").trim().equals("Y")){
 				disabled_grade = Integer.parseInt(rq.getParameter("disabled_grade"));
 				String disabled_day_init = rq.getParameter("disabled_day");
 				disabled_day = new Date(sdf.parse(disabled_day_init).getTime());
-				
 			}
 			System.out.println("uploadPath : " + uploadPath);
 			school_out = Datering(rq.getParameter("school_out"));
@@ -93,7 +104,7 @@ public class UserJoinHandler implements CommandHandler {
 			System.out.println("error : UserJoinHandler.processSubmit()");
 		}
 		User user = new User(0, filename, origfilename, rq.getParameter("name"),
-				Integer.parseInt(rq.getParameter("reg_num")), rq.getParameter("phone"), rq.getParameter("addr"),
+				Long.parseLong(rq.getParameter("reg_num")), rq.getParameter("phone"), rq.getParameter("addr"),
 				rq.getParameter("email"), rq.getParameter("school_name"), rq.getParameter("school_major"), school_out,
 				Integer.parseInt(rq.getParameter("tall")), Integer.parseInt(rq.getParameter("weight")),
 				rq.getParameter("eye_l"), rq.getParameter("eye_r"), rq.getParameter("gender"), rq.getParameter("marry"),

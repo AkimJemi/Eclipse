@@ -14,9 +14,9 @@ public class UserDAO {
 	private PreparedStatement pstmt;
 	private ResultSet rs;
 
-	public User selectByReg_num(Connection conn, User user, int reg_num) throws SQLException {
+	public User selectByReg_num(Connection conn, User user, long reg_num) throws SQLException {
 		pstmt = conn.prepareStatement("select * from user where reg_num = ?");
-		pstmt.setInt(1, reg_num);
+		pstmt.setLong(1, reg_num);
 		try {
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -94,7 +94,8 @@ public class UserDAO {
 			 * pstmt.setString(2, user.getFilerealName()); pstmt.setString(3,
 			 * user.getName());
 			 */
-			pstmt.setInt(2, user.getReg_num());
+			System.out.println("reg_num : " + user.getReg_num());
+			pstmt.setDouble(2, user.getReg_num());
 			pstmt.setString(3, user.getPhone());
 			pstmt.setString(4, user.getAddr());
 			pstmt.setString(5, user.getEmail());
@@ -120,10 +121,10 @@ public class UserDAO {
 		}
 	}
 
-	public Boolean checkUser(Connection conn, int no) throws SQLException {
+	public Boolean checkUser(Connection conn, long reg_num) throws SQLException {
 		Boolean result = false;
 		pstmt = conn.prepareStatement("select * from user where reg_num = ?");
-		pstmt.setInt(1, no);
+		pstmt.setLong(1, reg_num);
 		try {
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
@@ -204,10 +205,10 @@ public class UserDAO {
 		return false;
 	}
 
-	public Boolean reg_numCheck(Connection conn, int reg_num) {
+	public Boolean reg_numCheck(Connection conn, long reg_num) {
 		try {
 			pstmt = conn.prepareStatement("select * from user where reg_num = ?");
-			pstmt.setInt(1, reg_num);
+			pstmt.setLong(1, reg_num);
 			rs = pstmt.executeQuery();
 			if (!rs.next()) {
 				return true;

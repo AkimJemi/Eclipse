@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ page import="jdbc.connection.ConnectionProvider"%>
 <%@ page import="java.sql.*"%>
-<!DOCTYPE html>mm
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
