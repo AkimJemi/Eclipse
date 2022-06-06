@@ -250,15 +250,15 @@ select:focus {
 																		+ '<input type="hidden" name="lic_no'+wr+'" value="'+wr+'" />'
 																		+ '<div class="div_in_l">'
 																		+ '<div class="div_in_l_l">'
-																		+ '	<div class="input_title">자격증</div>'
+																		+ '	<div class="input_title" >資格</div>'
 																		+ '</div>'
 																		+ '<div class="div_in_l_r">'
-																		+ '<input class="short_input" type="text" name="license'+wr+'" maxlength="15">'
+																		+ '<input class="short_input" placeholder="ない場合は削除ボタンを押して消してください" type="text" name="license'+wr+'" maxlength="15">'
 																		+ '</div>'
 																		+ '</div>'
 																		+ '<div class="div_in_r">'
 																		+ '	<div class="div_in_l_l">'
-																		+ '	<div class="input_title">자격취득일</div>'
+																		+ '	<div class="input_title">資格取得日</div>'
 																		+ '</div>'
 																		+ '	<div class="div_in_l_r">'
 																		+ '	<input class="short_input" type="date" name="license_day'+wr+'"	maxlength="15">'
@@ -290,97 +290,97 @@ select:focus {
 
 		var name = Frm.name.value;
 		if (name == '') {
-			alert("성명을 입력해주세요");
+			alert("名を入力してください");
 			return;
 		}
 		var phone = Frm.phone.value;
 		if (phone == '') {
-			alert("연락처를 입력해주세요");
+			alert("連絡先を入力してください");
 			return;
 		}
 		var reg_num = Frm.reg_num.value;
 		if (reg_num == '') {
-			alert("주민번호를 입력해주세요");
+			alert("住民番号を入力してください");
 			return;
 		}
 		var addr = Frm.addr.value;
 		if (addr == '') {
-			alert("주소를 입력해주세요");
+			alert("住所を入力してください");
 			return;
 		}
 		var email = Frm.email.value;
 		if (email == '') {
-			alert("이메일을 입력해주세요");
+			alert("メールを入力してください");
 			return;
 		}
 
 		var tall = Frm.tall.value;
 		if (tall == '') {
-			alert("신장을 입력해주세요");
+			alert("身長を入力してください");
 			return;
 		}
 
 		var eye_l = Frm.eye_l.value;
 		if (eye_l == '') {
-			alert("[좌] 시력을 입력해주세요");
+			alert("[左]視力を入力してください");
 			return;
 		}
 		var eye_r = Frm.eye_r.value;
 		if (eye_r == '') {
-			alert("[우] 시력을 입력해주세요");
+			alert("[右]視力を入力してください");
 			return;
 		}
 		var weight = Frm.weight.value;
 		if (weight == '') {
-			alert("체중을 입력해주세요");
+			alert("体重を入力してください");
 			return;
 		}
 		var marry = Frm.marry.value;
 		if (marry == '9') {
-			alert("결혼여부를 선택해주세요");
+			alert("結婚可否を選択してください");
 			return;
 		}
 
 		var gender = Frm.gender.value;
 		if (gender == '9') {
-			alert("성별을 선택해주세요");
+			alert("性別を選択してください");
 			return;
 		}
 		var disabled = Frm.disabled.value;
 		if (disabled == '9') {
-			alert("장애인 구분 선택해주세요");
+			alert("障害者区分を選択してください");
 			return;
 		}
 		if (disabled == 'Y') {
 			var disabled_grade = Frm.disabled_grade.value;
 			if (disabled_grade == '9') {
-				alert("장애인 구분 [유]를 선택하신 경우 장애인 등급을 선택해주세요");
+				alert("障害者区分［有］を選択した場合は、障害者等級を選択してください");
 				return;
 			}
 			var disabled_day = Frm.disabled_day.value;
 			if (disabled_day == '') {
-				alert("장애인 구분 [유]를 선택하신 경우 장애인 등록일을 선택해주세요");
+				alert("障害者区分[有]を選択した場合は、障害者登録日を選択してください");
 				return;
 			}
 		}
 		var school_name = Frm.school_name.value;
 		if (school_name == '') {
-			alert("학교명을 입력해주세요");
+			alert("卒業名を入力してください");
 			return;
 		}
 		var school_major = Frm.school_major.value;
 		if (school_major == '') {
-			alert("전공을 입력해주세요");
+			alert("専攻を入力してください");
 			return;
 		}
 		var school_out = Frm.school_out.value;
 		if (school_out == '') {
-			alert("졸업연도를 입력해주세요");
+			alert("卒業年度入力してください");
 			return;
 		}
 		var filename = Frm.filename.value;
 		if (filename == '') {
-			alert("사진을 첨부해주세요");
+			alert("写真添付してください");
 			return;
 		}
 
@@ -410,7 +410,7 @@ select:focus {
 			var license_day5 = Frm.license_day5.value;
 		}
 		if (!Frm.lic_no1) {
-			if (!confirm("입력 완료하셨습니다. 마지막으로 자격증이 정말 없으십니까?"))
+			if (!confirm("入力完了しました。 資格証が本当にないですか?"))
 				return;
 		}
 
@@ -455,7 +455,7 @@ select:focus {
 		%>
 	</c:if>
 	<div id="wrap">
-		<br> <br> <b><font size="6" color="gray">사원등록</font></b> <br>
+		<br> <br> <b><font size="6" color="gray">社員登録</font></b> <br>
 		<br> <br>
 
 		<form id="Frm" action="" method="post" enctype="multipart/form-data"
@@ -463,25 +463,25 @@ select:focus {
 			<div id="div_1">
 				<div class="div_in_l">
 					<div class="div_in_l_l">
-						<div class="input_title">성명</div>
-						<div class="input_title">연락처</div>
-						<div class="input_title">주민등록번호</div>
+						<div class="input_title">名</div>
+						<div class="input_title">連絡先</div>
+						<div class="input_title">住民番号</div>
 					</div>
 					<div class="div_in_l_r">
 						<input class="short_input" type="text" name="name" maxlength="7"
 							value="${user.name }" <%=ifRequired%>> <input
 							class="short_input" type="number" name="phone" maxlength="13"
-							value="${user.phone }" placeholder="- 없이 입력해주세요" <%=ifRequired%>>
+							value="${user.phone }" placeholder="- なしで入力してください" <%=ifRequired%>>
 						<input class="short_input" type="number" name="reg_num"
-							maxlength="14" value="${user.reg_num }" placeholder="- 없이 입력해주세요"
+							maxlength="14" value="${user.reg_num }" placeholder="- なしで入力してください"
 							<%=ifRequired%>>
 					</div>
 				</div>
 
 				<div class="div_in_r">
 					<div class="div_in_l_l">
-						<div class="input_title">파일첨부</div>
-						<div class="input_title">이메일</div>
+						<div class="input_title">写真添付</div>
+						<div class="input_title">メール</div>
 					</div>
 					<div class="div_in_l_r">
 						<%
@@ -504,7 +504,7 @@ select:focus {
 			</div>
 
 			<div id="div_2">
-				<div class="input_title_long">주소</div>
+				<div class="input_title_long">住所</div>
 				<input class="short_input" type="text" name="addr" maxlength="50"
 					value="${user.addr}" <%=ifRequired%>>
 			</div>
@@ -513,30 +513,30 @@ select:focus {
 			<div id="div_3">
 				<div class="div_in_l">
 					<div class="div_in_l_l">
-						<div class="input_title">신장</div>
-						<div class="input_title">시력</div>
-						<div class="input_title">체중</div>
-						<div class="input_title">결혼여부</div>
+						<div class="input_title">身長</div>
+						<div class="input_title">視力</div>
+						<div class="input_title">体重</div>
+						<div class="input_title">結婚可否</div>
 					</div>
 					<div class="div_in_l_r">
 						<input class="short_input" type="number" name="tall" maxlength="3"
-							placeholder="숫자만 입력해주세요." value="${user.tall}" <%=ifRequired%>>
+							placeholder="数字だけ入力してください" value="${user.tall}" <%=ifRequired%>>
 						<div>
-							<span class="eye_span">좌</span><input class="very_short_input"
-								type="text" name="eye_l" placeholder="예) 1.5" maxlength="3"
+							<span class="eye_span">左</span><input class="very_short_input"
+								type="text" name="eye_l" placeholder="例) 1.5" maxlength="3"
 								value="${user.eye_l}" <%=ifRequired%>> <span
-								class="eye_span">우</span><input class="very_short_input"
+								class="eye_span">右</span><input class="very_short_input"
 								type="text" name="eye_r" maxlength="3" value="${user.eye_r}"
-								placeholder="예) 1.5" <%=ifRequired%>> <input
+								placeholder="例) 1.5" <%=ifRequired%>> <input
 								class="short_input" type="number" name="weight" maxlength="3"
-								value="${user.weight}" placeholder="숫자만 입력해주세요." <%=ifRequired%>>
+								value="${user.weight}" placeholder="数字だけ入力してください" <%=ifRequired%>>
 						</div>
 						<c:choose>
 							<c:when test="${!readonly }">
 								<select class="short_input" name="marry">
-									<option value="9">결혼여부</option>
-									<option value="N">미혼</option>
-									<option value="Y">기혼</option>
+									<option value="9">結婚可否</option>
+									<option value="N">未婚者</option>
+									<option value="Y">既婚者</option>
 								</select>
 							</c:when>
 							<c:otherwise>
@@ -554,34 +554,34 @@ select:focus {
 				</div>
 				<div class="div_in_r">
 					<div class="div_in_l_l">
-						<div class="input_title">성별구분</div>
-						<div class="input_title">장애인구분</div>
-						<div class="input_title">장애인등급</div>
-						<div class="input_title">장애등록일</div>
+						<div class="input_title">性別区分</div>
+						<div class="input_title">障害者区分</div>
+						<div class="input_title">障害者等級</div>
+						<div class="input_title">障害登録日</div>
 					</div>
 					<div class="div_in_l_r">
 						<c:choose>
 							<c:when test="${!readonly}">
 								<select class="short_input" name="gender">
-									<option value="9">성별</option>
-									<option value="M">남</option>
-									<option value="F">여</option>
+									<option value="9">性別</option>
+									<option value="M">男</option>
+									<option value="F">女</option>
 								</select>
 								<select class="short_input" name="disabled"
 									onchange="disabledCheck()">
-									<option value="9">유무</option>
-									<option value="N">무</option>
-									<option value="Y">유</option>
+									<option value="9">有無</option>
+									<option value="N">無</option>
+									<option value="Y">有</option>
 								</select>
 								<select class="short_input" id="disabled_grade"
 									name="disabled_grade">
 									<option value="9">-</option>
-									<option value="1">1급</option>
-									<option value="2">2급</option>
-									<option value="3">3급</option>
-									<option value="4">4급</option>
-									<option value="5">5급</option>
-									<option value="6">6급</option>
+									<option value="1">1級</option>
+									<option value="2">2級</option>
+									<option value="3">3級</option>
+									<option value="4">4級</option>
+									<option value="5">5級</option>
+									<option value="6">6級</option>
 								</select>
 								<input class="short_input" type="date" id="disabled_day"
 									name="disabled_day" maxlength="15" value="${user.disabled_day}">
@@ -589,26 +589,26 @@ select:focus {
 							<c:otherwise>
 								<c:choose>
 									<c:when test="${user.gender eq 'M' }">
-										<input type="text" class="short_input" value="남성" readonly />
+										<input type="text" class="short_input" value="男性" readonly />
 									</c:when>
 									<c:otherwise>
-										<input type="text" class="short_input" value="여성" readonly />
+										<input type="text" class="short_input" value="女性" readonly />
 									</c:otherwise>
 								</c:choose>
 								<c:choose>
 									<c:when test="${user.disabled eq 'Y' }">
-										<input type="text" class="short_input" value="유" readonly />
+										<input type="text" class="short_input" value="有" readonly />
 										<input class="short_input" type="text" name="disabled_grade"
 											maxlength="15" value="${user.disabled_grade}" readonly>
 										<input class="short_input" type="date" name="disabled_day"
 											maxlength="15" value="${user.disabled_day}" readonly>
 									</c:when>
 									<c:otherwise>
-										<input type="text" class="short_input" value="무" readonly />
+										<input type="text" class="short_input" value="無" readonly />
 										<input class="short_input" type="text" name="disabled_grade"
-											maxlength="15" value="무" readonly>
+											maxlength="15" value="無" readonly>
 										<input class="short_input" type="text" name="disabled_day"
-											maxlength="15" value="무" readonly>
+											maxlength="15" value="無" readonly>
 									</c:otherwise>
 								</c:choose>
 							</c:otherwise>
@@ -620,9 +620,9 @@ select:focus {
 			<div id="div_4">
 				<div class="div_in_l">
 					<div class="div_in_l_l">
-						<div class="input_title">학교명</div>
-						<div class="input_title">전공</div>
-						<div class="input_title">졸업년도</div>
+						<div class="input_title">卒業名</div>
+						<div class="input_title">専攻</div>
+						<div class="input_title">卒業年度</div>
 					</div>
 					<div class="div_in_l_r">
 						<input class="short_input" type="text" name="school_name"
@@ -641,17 +641,17 @@ select:focus {
 						<div class="div_in_l">
 							<input type="hidden" name="lic_no1" value="1" />
 							<div class="div_in_l_l">
-								<div class="input_title">자격증</div>
+								<div class="input_title">資格</div>
 							</div>
 							<div class="div_in_l_r">
 								<input class="short_input" type="text" name="license1"
 									maxlength="15" value="${user.license }"
-									placeholder="자격증이 없을 시 공백으로 해주세요">
+									placeholder="資格がない場合は空白にしてください。">
 							</div>
 						</div>
 						<div class="div_in_r">
 							<div class="div_in_l_l">
-								<div class="input_title">자격취득일</div>
+								<div class="input_title">資格取得日</div>
 							</div>
 							<div class="div_in_l_r">
 								<input class="short_input" type="date" name="license_day1"
@@ -662,8 +662,8 @@ select:focus {
 					<div id="add_div"></div>
 					<div class="div_5_1">
 						<input class="add_button_style" type='button' id="create_license"
-							value="추가" /> <input class="add_button_style" type='button'
-							id="delete_license" value="삭제" />
+							value="追加" /> <input class="add_button_style" type='button'
+							id="delete_license" value="削除" />
 					</div>
 				</c:when>
 				<c:otherwise>
@@ -672,7 +672,7 @@ select:focus {
 							<div class="div_in_l">
 								<input type="hidden" name="lic_no${license.lic_no }" value="1" />
 								<div class="div_in_l_l">
-									<div class="input_title">자격증</div>
+									<div class="input_title">資格</div>
 								</div>
 								<div class="div_in_l_r">
 									<input class="short_input" type="text"
@@ -682,7 +682,7 @@ select:focus {
 							</div>
 							<div class="div_in_r">
 								<div class="div_in_l_l">
-									<div class="input_title">자격취득일</div>
+									<div class="input_title">資格取得日</div>
 								</div>
 								<div class="div_in_l_r">
 									<input class="short_input" type="date"
@@ -699,15 +699,15 @@ select:focus {
 				<c:choose>
 					<c:when test="${!readonly}">
 						<input class="button_style" type="button" onclick="fn_check()"
-							value="사원등록" />
+							value="社員登録" />
 						<button class="button_style" type="button"
-							onclick="location.href='user.do?init=start'">뒤로</button>
+							onclick="location.href='user.do?init=start'">戻る</button>
 					</c:when>
 					<c:otherwise>
 						<input class="button_style" type="button"
-							onclick="location.href='userJoin.do'" value="사원추가" />
+							onclick="location.href='userJoin.do'" value="社員追加" />
 						<button class="button_style" type="button"
-							onclick="location.href='user.do?init=start'">뒤로</button>
+							onclick="location.href='user.do?init=start'">戻る</button>
 					</c:otherwise>
 				</c:choose>
 			</div>

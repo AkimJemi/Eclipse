@@ -59,6 +59,7 @@ public class UserService {
 			if(userDao.checkUser(conn, user.getReg_num())){
 				return result = true;
 			}
+			System.out.println("test2");
 		} catch (Exception e) {
 			System.out.println("error : userDao.modifyUser()");
 			System.out.println(e.getMessage());

@@ -10,5 +10,6 @@
 	<script type="text/javascript">
 		location.href = 'user.do?init=start';
 	</script>
+	1111111111111
 </body>
 </html>

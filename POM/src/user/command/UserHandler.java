@@ -147,7 +147,7 @@ public class UserHandler implements CommandHandler {
 
 		System.out.println("disabled_day :" + disabled_day);
 		user = new User(no, rq.getParameter("filename"),
-				rq.getParameter("filerealname"), rq.getParameter("name"), Integer.parseInt(rq.getParameter("reg_num")),
+				rq.getParameter("filerealname"), rq.getParameter("name"), Long.parseLong(rq.getParameter("reg_num")),
 				rq.getParameter("phone"), rq.getParameter("addr"), rq.getParameter("email"),
 				rq.getParameter("school_name"), rq.getParameter("school_major"), school_out,
 				Integer.parseInt(rq.getParameter("tall")), Integer.parseInt(rq.getParameter("weight")),

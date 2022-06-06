@@ -8,7 +8,7 @@ public class User {
 	private String filename;
 	private String filerealname;
 	private String name;
-	private long reg_num;
+	private Long reg_num;
 	private String phone;
 	private String addr;
 	private String email;
@@ -26,7 +26,7 @@ public class User {
 	private Date disabled_day;
 	
 	
-	public User(int no, String filename, String filerealname, String name, long reg_num, String phone, String addr, String email,
+	public User(int no, String filename, String filerealname, String name, Long reg_num, String phone, String addr, String email,
 			String school_name, String school_major, Date school_out, int tall, int weight, String eye_l, String eye_r,
 			String gender, String marry, String disabled, int disabled_grade, Date disabled_day) {
 		this.no = no;
@@ -125,7 +125,7 @@ public class User {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public void setReg_num(int reg_num) {
+	public void setReg_num(Long reg_num) {
 		this.reg_num = reg_num;
 	}
 	public void setPhone(String phone) {
