@@ -1,3 +1,0 @@
-/main.do=main.command.MainHandler
-/user.do=user.command.UserHandler
-/userJoin.do=user.command.UserJoinHandler
