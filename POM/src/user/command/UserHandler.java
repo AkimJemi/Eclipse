@@ -40,17 +40,16 @@ public class UserHandler implements CommandHandler {
 			String searchField = rq.getParameter("searchField");
 			int startPage = 1;
 			if (rq.getParameter("startPage") != null)
-				startPage =Integer.parseInt(rq.getParameter("startPage"));
-				
+				startPage = Integer.parseInt(rq.getParameter("startPage"));
+
 			int currentPage = 1;
-			if(rq.getParameter("currentPage") !=null)
-			currentPage = Integer.parseInt(rq.getParameter("currentPage"));
-			
-			
-			int total = personalService.getTotalPage(search,searchField);
-			
+			if (rq.getParameter("currentPage") != null)
+				currentPage = Integer.parseInt(rq.getParameter("currentPage"));
+
+			int total = personalService.getTotalPage(search, searchField);
+
 			Paging paging = new Paging(total, startPage, currentPage);
-			
+
 			rq.setAttribute("search", search);
 			rq.setAttribute("searchField", searchField);
 			rq.setAttribute("paging", paging);
@@ -59,12 +58,9 @@ public class UserHandler implements CommandHandler {
 				rq.setAttribute("searchError2", Boolean.TRUE);
 				return MAIN_FORM;
 			}
-			personnelList = personalService.getSearchPersonnel(search, searchField ,paging);
+			personnelList = personalService.getSearchPersonnel(search, searchField, paging);
 		}
 		rq.setAttribute("personnelList", personnelList);
-		
-		
-	
 
 		if (rq.getParameter("choose") != null) {
 			if (rq.getParameter("choose").equalsIgnoreCase("personnel"))
@@ -75,7 +71,7 @@ public class UserHandler implements CommandHandler {
 
 		if (rq.getParameter("modify1") != null)
 			rq.setAttribute("modify1", Boolean.TRUE);
-		
+
 		if (rq.getParameter("no") != null && rq.getParameter("no") != "") {
 			no = Integer.parseInt(rq.getParameter("no"));
 			rq.setAttribute("no", no);
@@ -91,8 +87,11 @@ public class UserHandler implements CommandHandler {
 //			return MAIN_FORM;
 		}
 		
+		System.out.println("test3");
 		ArrayList<License> licenseList = new ArrayList<License>();
 		licenseList = licenseService.GetAllLicenseList(no);
+		System.out.println("test4");
+		
 		rq.setAttribute("licenseList", licenseList);
 
 		if (rq.getMethod().equalsIgnoreCase("POST"))
@@ -104,7 +103,7 @@ public class UserHandler implements CommandHandler {
 	}
 
 	private String processForm(HttpServletRequest rq, HttpServletResponse rs) throws SQLException {
-		
+
 		return MAIN_FORM;
 	}
 
@@ -123,38 +122,38 @@ public class UserHandler implements CommandHandler {
 		licenseService.InsertAllLicense(licenseList, no);
 		licenseList = licenseService.GetAllLicenseList(no);
 		rq.setAttribute("licenseList", licenseList);
-		
+
 		Date school_out = null;
 		if (rq.getParameter("school_out") != null && rq.getParameter("school_out") != "")
 			school_out = Datering(rq.getParameter("school_out"));
-		
-		
+
+		System.out.println("test4");
+
 		String disabled = null;
 		int disabled_grade = 0;
-		Date disabled_day= null;
-		if(rq.getParameter("disabled") !=null) {
-			if(rq.getParameter("disabled").equalsIgnoreCase("N")) {
+		Date disabled_day = null;
+		if (rq.getParameter("disabled") != null) {
+			if (rq.getParameter("disabled").equalsIgnoreCase("N")) {
 				disabled = rq.getParameter("disabled");
 				disabled_grade = 0;
 				disabled_day = null;
-			}else {
+			} else {
 				disabled = rq.getParameter("disabled");
 				disabled_grade = Integer.parseInt(rq.getParameter("disabled_grade"));
 				disabled_day = Datering(rq.getParameter("disabled_day"));
 			}
 		}
-			
+		System.out.println("test5");
 
 		System.out.println("disabled_day :" + disabled_day);
-		user = new User(no, rq.getParameter("filename"),
-				rq.getParameter("filerealname"), rq.getParameter("name"), Long.parseLong(rq.getParameter("reg_num")),
-				rq.getParameter("phone"), rq.getParameter("addr"), rq.getParameter("email"),
-				rq.getParameter("school_name"), rq.getParameter("school_major"), school_out,
+		user = new User(no, rq.getParameter("filename"), rq.getParameter("filerealname"), rq.getParameter("name"),
+				rq.getParameter("reg_num"), rq.getParameter("phone"), rq.getParameter("addr"),
+				rq.getParameter("email"), rq.getParameter("school_name"), rq.getParameter("school_major"), school_out,
 				Integer.parseInt(rq.getParameter("tall")), Integer.parseInt(rq.getParameter("weight")),
 				rq.getParameter("eye_l"), rq.getParameter("eye_r"), rq.getParameter("gender"), rq.getParameter("marry"),
 				disabled, disabled_grade, disabled_day);
 		user = userService.modifyUser(user);
-		
+
 		rq.setAttribute("user", user);
 		return MAIN_FORM;
 	}
