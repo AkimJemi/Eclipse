@@ -23,7 +23,7 @@ public class LicenseService {
 			System.out.println(e.getMessage());
 		} finally {
 			JdbcUtil.close(conn);
-		}
+		};
 		return licenseList;
 	}
 	

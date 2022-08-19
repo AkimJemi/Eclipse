@@ -96,7 +96,6 @@ public class PersonnelDAO {
 			pstmt.setInt(2, (paging.getCurrentPage()-1)*10);
 			rs = pstmt.executeQuery();
 			return makeList(rs);
-
 		} finally {
 			JdbcUtil.close(pstmt, rs);
 		}
@@ -104,7 +103,6 @@ public class PersonnelDAO {
 
 	private ArrayList<Personnel> makeList(ResultSet rs) throws SQLException {
 		ArrayList<Personnel> list = new ArrayList<>();
-
 		while (rs.next()) {
 			int no = rs.getInt("no");
 			String name = rs.getString("name");

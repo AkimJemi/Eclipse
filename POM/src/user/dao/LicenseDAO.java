@@ -36,17 +36,15 @@ public class LicenseDAO {
 			pstmt = conn.prepareStatement("select * from license where no =?");
 			pstmt.setInt(1, no);
 			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				License license = new License(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDate(4));
-				licList.add(license);
-			}
+			
+			while (rs.next()) 
+				licList.add(new License(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getDate(4)));
+			
 		} catch (Exception e) {
 			System.out.println("error: LicenseDAO.SelectAll()");
 			System.out.println(e.getMessage());
 		} finally {
-			JdbcUtil.close(rs);
-			JdbcUtil.close(pstmt);
+			JdbcUtil.close(pstmt, rs);
 		}
 		return licList;
 	}

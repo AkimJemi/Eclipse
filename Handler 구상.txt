@@ -1,0 +1,14 @@
+detail
+update
+create
+delete
+
+
+x no 
+create - reply - onlyread
+
+o no
+detail + reply + onlyread
+update - reply - onlyread
+
+delete -> list

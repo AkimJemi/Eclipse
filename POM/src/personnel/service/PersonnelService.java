@@ -61,7 +61,6 @@ public class PersonnelService {
 			int total = personnelDao.getTotalPage(conn, search, searchField);
 			paging.setTotal(total);
 			personnelList = personnelDao.getSearch(conn, search, searchField, paging);
-
 		} catch (Exception e) {
 			System.out.println("error : personnelDao.getSearchPersonnel()");
 			System.out.println(e.getMessage());
